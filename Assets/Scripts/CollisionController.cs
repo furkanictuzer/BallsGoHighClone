@@ -18,7 +18,7 @@ public class CollisionController : MonoBehaviour
 
             var alpha = Mathf.Acos(Vector3.Dot(-vector, normal) / (vector.magnitude * normal.magnitude));
             
-            var speedConstant = Mathf.Sin(alpha);
+            /*var speedConstant = Mathf.Sin(alpha);
 
             if (speedConstant <= 1 && speedConstant >= 0.2f)
             {
@@ -27,7 +27,7 @@ public class CollisionController : MonoBehaviour
             else if (speedConstant < 0.2f)
             {
                 BallsMoveController.Instance.SetSpeed(speedConstant);
-            }
+            }*/
 
             var angleX = CalculateAngleX(normal);
 
@@ -93,13 +93,13 @@ public class CollisionController : MonoBehaviour
     {
         other.GetComponent<Collider>().enabled = false;
         
+        var main = breakParticle.main;
+
+        main.startColor = color;
+        
         var particle = Instantiate(breakParticle);
 
         particle.transform.position = other.position;
-        
-        var main=breakParticle.main;
-
-        main.startColor = color;
 
         other.gameObject.SetActive(false);
     }

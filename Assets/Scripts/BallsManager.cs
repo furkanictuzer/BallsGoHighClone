@@ -35,9 +35,11 @@ public class BallsManager : MonoSingleton<BallsManager>
         }
         else
         {
-            SortV();
+            Sort();
         }
     }
+
+    #region OnValidate Functions
 
     private void CreateBalls()
     {
@@ -49,7 +51,7 @@ public class BallsManager : MonoSingleton<BallsManager>
 
             go.transform.localPosition = Vector3.zero;
         }
-        SortV();
+        Sort();
     }
 
     private void DestroyBalls()
@@ -64,19 +66,13 @@ public class BallsManager : MonoSingleton<BallsManager>
         }
 
         _isDecrease = false;
-        SortV();
+        Sort();
     }
 
-    /*private void MoveObjects(Transform objectTransform, float degree)
-    {
-        var pos = Vector3.zero;
-        
-        pos.x = Mathf.Cos(degree * Mathf.Deg2Rad);
-        pos.z = Mathf.Sin(degree * Mathf.Deg2Rad);
+    #endregion
 
-        objectTransform.localPosition = pos * distance;
-    }*/
-    private void MoveObjectsV(Transform objectTransform, float degree , float dist)
+    
+    private static void MoveObjects(Transform objectTransform, float degree , float dist)
     {
         var pos = Vector3.zero;
         
@@ -86,19 +82,9 @@ public class BallsManager : MonoSingleton<BallsManager>
         objectTransform.localPosition = pos * dist;
     }
 
-    /*private void Sort()
+    private void Sort()
     {
-        float ballsCount = balls.Count;
-
-        var angle = 360 / ballsCount;
-
-        for (var i = 0; i < ballsCount; i++)
-            MoveObjects(balls[i].transform, i * angle);
-    }*/
-
-    private void SortV()
-    {
-        int ballsCount = balls.Count;
+        var ballsCount = balls.Count;
 
         var num = 0;
 
@@ -109,15 +95,13 @@ public class BallsManager : MonoSingleton<BallsManager>
 
             var innerCount = i * 6 == 0 ? 1 : i * 6;
             var angle = 360 / innerCount;
-            
-            //Debug.Log(angle);
-            
+
             for (var j = 0; j < innerCount; j++)
             {
                 if (ballsCount == num)
                     break;
                 
-                MoveObjectsV(balls[num].transform, j * angle,i);
+                MoveObjects(balls[num].transform, j * angle,i);
                 num++;
             }
         }
@@ -142,13 +126,11 @@ public class BallsManager : MonoSingleton<BallsManager>
             go.transform.localPosition = Vector3.zero;
         }
         
-        SortV();
+        Sort();
     }
     
     public void RemoveBalls(int removingNum)
     {
-        //ballCount -= removingNum;
-
         for (var i = ballCount-1; i >= ballCount-removingNum; i--)
         {
             var go = balls[balls.Count - 1];
@@ -159,6 +141,6 @@ public class BallsManager : MonoSingleton<BallsManager>
         }
 
         ballCount = balls.Count;
-        SortV();
+        Sort();
     }
 }

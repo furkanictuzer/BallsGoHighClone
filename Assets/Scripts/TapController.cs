@@ -29,6 +29,10 @@ public class TapController : MonoSingleton<TapController>
         {
             DecreaseAngleX(gravityForBalls);
         }
+        /*else if (Input.GetMouseButton(0) && !isFly && BallsMoveController.Instance.currentStage == Stage.Game)
+        {
+            KeepTransformSurface();
+        }*/
 
         if (BallsMoveController.Instance.currentStage == Stage.Game && !isFly && Input.GetMouseButton(0))
         {
@@ -51,26 +55,38 @@ public class TapController : MonoSingleton<TapController>
 
         //transform.eulerAngles = newAngles;
         transform.rotation = Quaternion.Euler(newAngles);
-        transform.Rotate(Vector3.right * Time.deltaTime * constant);
+        //transform.Rotate(Vector3.right * Time.deltaTime * constant);
 
     }
     
     private static float ClampAngle(float angle, float from, float to)
     {
-        // accepts e.g. -80, 80
         if (angle < 0f) angle = 360 + angle;
 
         return angle > 180f ? Mathf.Max(angle, 360 + @from) : Mathf.Min(angle, to);
     }
- 
-    
+
+    private void KeepTransformSurface()
+    {
+        var ray = new Ray(transform.position, Vector3.down);
+        var pos = transform.position;
+        
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(ray ,out hitInfo,2,layerMask))
+        {
+            pos.y = hitInfo.point.y;
+        }
+
+        transform.position = pos;
+    }
 
     private void CheckGround()
     {
-        var ray = new Ray(transform.position, Vector3.down);
+        var ray = new Ray(transform.position + Vector3.up * 2, Vector3.down);
 
         RaycastHit hitInfo;
 
-        isFly = !Physics.Raycast(ray ,out hitInfo,2,layerMask);
+        isFly = !Physics.Raycast(ray ,out hitInfo,4,layerMask);
     }
 }

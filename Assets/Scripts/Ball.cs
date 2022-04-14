@@ -20,18 +20,19 @@ public class Ball : MonoBehaviour
 
     private void Update()
     {
-        if (BallsMoveController.Instance.currentStage == Stage.EndGame && GetComponent<Rigidbody>() == null)
+        switch (BallsMoveController.Instance.currentStage)
         {
-            var body=gameObject.AddComponent<Rigidbody>();
+            case Stage.EndGame when GetComponent<Rigidbody>() == null:
+            {
+                var body=gameObject.AddComponent<Rigidbody>();
 
-            body.useGravity = false;
-            body.constraints = RigidbodyConstraints.FreezeAll;
-
-            //transform.parent = null;
-        }
-        else if (BallsMoveController.Instance.currentStage == Stage.EndGame)
-        {
-            transform.localPosition += _vector * Time.deltaTime * _speed;
+                body.useGravity = false;
+                body.constraints = RigidbodyConstraints.FreezeAll;
+                break;
+            }
+            case Stage.EndGame:
+                transform.localPosition += _vector * Time.deltaTime * _speed;
+                break;
         }
     }
 
@@ -43,15 +44,6 @@ public class Ball : MonoBehaviour
             
             SetEndVector(collision.contacts[0].normal.normalized);
         }
-        /*else if (collision.gameObject.CompareTag("End"))
-        {
-            var pos = transform.position;
-
-            pos.y = collision.contacts[0].point.y + 0.5f;
-
-            transform.position = pos;
-            transform.eulerAngles=Vector3.zero;
-        }*/
     }
 
     private void SetEndVector(Vector3 vectorNormal)

@@ -14,7 +14,7 @@ public enum MathType
 public class GateControl : MonoBehaviour
 {
     
-    [HideInInspector] public Color color;
+    public Color color;
     
     public MathType mathType;
 
@@ -22,7 +22,7 @@ public class GateControl : MonoBehaviour
 
     private void Awake()
     {
-        color = GetComponent<Renderer>().material.color;
+        color = GetComponent<Renderer>().material.GetColor("_BaseColor");
     }
 
     

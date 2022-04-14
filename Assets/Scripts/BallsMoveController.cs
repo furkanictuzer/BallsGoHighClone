@@ -31,7 +31,7 @@ public class BallsMoveController : MonoSingleton<BallsMoveController>
     {
         if (currentStage == Stage.Game)
         {
-            transform.Translate(Vector3.forward * Time.deltaTime * speed);
+            transform.position+=transform.forward * Time.deltaTime * speed;
         }
         else if (currentStage == Stage.EndGame)
         {
